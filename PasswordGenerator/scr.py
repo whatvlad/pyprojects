@@ -1,14 +1,31 @@
-import random
+import secrets
 import string
 
-print("PASSWORD GENERATOR")
 
-def generate_password(length):
+MINIMUM_LENGTH = 8
+
+
+def generate_password(length: int) -> str:
+    """Return a cryptographically secure password of the requested length."""
+    if length < MINIMUM_LENGTH:
+        raise ValueError(f"Password length must be at least {MINIMUM_LENGTH}.")
+
     characters = string.ascii_letters + string.digits + string.punctuation
-    password = ''.join(random.choice(characters) for i in range(length))
-    return password
+    return "".join(secrets.choice(characters) for _ in range(length))
 
-length = int(input("Enter the password length: "))
-password = generate_password(length)
-print("Generated password:", password)
 
+def main() -> None:
+    print("PASSWORD GENERATOR")
+
+    try:
+        length = int(input("Enter the password length: "))
+        password = generate_password(length)
+    except ValueError as error:
+        print(f"Error: {error}")
+        return
+
+    print(f"Generated password: {password}")
+
+
+if __name__ == "__main__":
+    main()
